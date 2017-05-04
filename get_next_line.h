@@ -15,7 +15,7 @@ typedef struct		s_line
 	struct s_line	*next;
 }					t_line;
 
-# define BUFF_SIZE 10
+# define BUFF_SIZE 5
 
 int	get_next_line(const int fd, char **line);
 

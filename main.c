@@ -20,8 +20,9 @@ int	main(int argc, char **argv)
 			return(-1);
 		}
 		printf("READ BUFF_SIZE:\n");
-		printf("LINE:%s\n", *line);
+		printf("LINE:%c\n", **line);
 	}
+	printf("Check: %i\n", check);
 	printf("DONE READING!\n");
 	return(0);
 }

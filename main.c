@@ -12,7 +12,7 @@ int	main(int argc, char **argv)
 	else
 		printf("OPEN FAILED!\n");
 
-	while ((check = get_next_line((const)fd, line)) != 0)
+	while ((check = get_next_line(fd, line)) != 0)
 	{
 		if (check == -1)
 		{
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 			return(-1);
 		}
 		printf("READ BUFF_SIZE:\n");
-		printf(line);
+		printf("LINE:%s\n", *line);
 	}
 	printf("DONE READING!\n");
 	return(0);

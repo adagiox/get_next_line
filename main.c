@@ -19,8 +19,8 @@ int	main(int argc, char **argv)
 			printf("ERROR READING!\n");
 			return(-1);
 		}
-		printf("READ BUFF_SIZE:\n");
-		printf("LINE:%c\n", **line);
+		printf("READ OF BUFF_SIZE\n");
+		printf("LINE: %s\n", *line);
 	}
 	printf("Check: %i\n", check);
 	printf("DONE READING!\n");

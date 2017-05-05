@@ -18,5 +18,6 @@ typedef struct		s_line
 # define BUFF_SIZE 5
 
 int	get_next_line(const int fd, char **line);
+int	contains_newline(char *buf);
 
 #endif

@@ -40,7 +40,7 @@ char	*get_line(char *buf)
 	while (buf[size] != '\n')
 		size++;
 	line = ft_strsub(buf, 0, size);
-	buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE - (size + 1));
+	buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE);
 	return(line);
 }
 

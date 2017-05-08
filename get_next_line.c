@@ -2,37 +2,53 @@
 
 int		get_next_line(const int fd, char **line)
 {
-	static char buf[BUFF_SIZE];
+	static char buf[BUFF_SIZE + 1];
 	char *temp;
 	int ret;
-	int nl;
 
 	if (contains_newline(buf) == 1)
 	{
 		temp = get_line(buf);
-		*line = temp;
+		line = &temp;
+		printf("line return: %s\n", *line);
+		trim_buf(buf);
 		return(1);
 	}
-
 	temp = ft_strnew(BUFF_SIZE + 1);
-	ret = read(fd, buf, BUFF_SIZE);
-	while ((nl = contains_newline(buf)) == 0)
+	temp = ft_strjoin(buf, temp);
+	ft_strclr(buf);
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		temp = ft_strcpy(buf, temp);
+		temp = ft_strjoin(temp, buf);
+		if ((contains_newline(buf)) == 1)
+		{
+			temp = get_line(temp);
+			line = &temp;
+			printf("line return: %s\n", *line);
+			trim_buf(buf);
+			return (1);
+		}
 	}
 	if (ret == -1)
 		return(-1);
 	if (ret == 0)
 		return(0);
-	printf("BUF: %s\n", temp);
-	*line = temp;
 	return (1);
+}
+
+void	trim_buf(char *buf)
+{
+	int size;
+
+	size = 0;
+	while (buf[size] != '\n')
+		size++;
+	buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE);
 }
 
 char	*get_line(char *buf)
 {
 	// RETURNS EVERYTHING UP TO THE NEWLINE
-	// AND REMOVES THE LINE FROM BUF
 	int size;
 	char *line;
 
@@ -40,7 +56,6 @@ char	*get_line(char *buf)
 	while (buf[size] != '\n')
 		size++;
 	line = ft_strsub(buf, 0, size);
-	buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE);
 	return(line);
 }
 
@@ -49,6 +64,8 @@ int		contains_newline(char *buf)
 	// IF BUF CONSTAINS A NEW LINE RETURN 1
 	char *nl;
 	nl = ft_strchr(buf, '\n');
+	if (nl == NULL)
+		return(0);
 	if (*nl == '\n')
 		return(1);
 	return(0);

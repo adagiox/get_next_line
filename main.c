@@ -19,7 +19,7 @@ int	main(int argc, char **argv)
 			printf("ERROR READING!\n");
 			return(-1);
 		}
-		printf("READ OF BUFF_SIZE\n");
+		printf("READ OF %i\n", BUFF_SIZE);
 		printf("LINE: %s\n", *line);
 	}
 	printf("Check: %i\n", check);

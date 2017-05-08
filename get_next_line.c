@@ -6,20 +6,18 @@ int		get_next_line(const int fd, char **line)
 	char *temp;
 	int ret;
 	int nl;
-	int count;
 
-	if (nl = contains_newline(buf) == 1)
+	if (contains_newline(buf) == 1)
 	{
 		temp = get_line(buf);
+		*line = temp;
+		return(1);
 	}
 
-	count = 1;
-	buf = ft_strnew(BUFF_SIZE + 1);
 	temp = ft_strnew(BUFF_SIZE + 1);
 	ret = read(fd, buf, BUFF_SIZE);
 	while ((nl = contains_newline(buf)) == 0)
 	{
-		count++;
 		temp = ft_strcpy(buf, temp);
 	}
 	if (ret == -1)
@@ -31,17 +29,18 @@ int		get_next_line(const int fd, char **line)
 	return (1);
 }
 
-char	*get_line(static char *buf)
+char	*get_line(char *buf)
 {
 	// RETURNS EVERYTHING UP TO THE NEWLINE
+	// AND REMOVES THE LINE FROM BUF
 	int size;
 	char *line;
 
 	size = 0;
 	while (buf[size] != '\n')
 		size++;
-	line = ft_strnew(size);
-	line = ft_strncpy(line, buf, size);
+	line = ft_strsub(buf, 0, size);
+	buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE - (size + 1));
 	return(line);
 }
 
@@ -50,7 +49,7 @@ int		contains_newline(char *buf)
 	// IF BUF CONSTAINS A NEW LINE RETURN 1
 	char *nl;
 	nl = ft_strchr(buf, '\n');
-	if (*nl != '\n')
-		return(0);
-	return(1);
+	if (*nl == '\n')
+		return(1);
+	return(0);
 }

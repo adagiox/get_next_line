@@ -31,14 +31,6 @@ int		get_next_line(const int fd, char **line)
 	return (1);
 }
 
-int		buf_empty(static char *buf)
-{
-	// IF BUF IS EMPTY RETURN 1
-	if (*buf == '\0')
-		return(1)
-	return(-1);
-}
-
 char	*get_line(static char *buf)
 {
 	// RETURNS EVERYTHING UP TO THE NEWLINE

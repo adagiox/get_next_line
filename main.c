@@ -28,9 +28,9 @@ int	main(int argc, char **argv)
 		printf("OPEN 3 FAILED!\n");
 
 	// READ FD1
-	if(check1 = get_next_line(fd1, &line)) == 1
+	if((check1 = get_next_line(fd1, &line)) == 1)
 	{
-		printf("%s\n", line);
+		printf("FD1: %i\n%s\n", fd1, line);
 	}
 	if (check1 == -1)
 		printf("ERROR 1!\n");
@@ -38,15 +38,41 @@ int	main(int argc, char **argv)
 		printf("DONE READING 1!\n");
 
 	// READ FD2
-	if(check2 = get_next_line(fd2, &line)) == 1
+	if((check2 = get_next_line(fd2, &line)) == 1)
 	{
-		printf("%s\n", line);
+		printf("FD2: %i\n%s\n", fd2, line);
 	}
 	if (check2 == -1)
 		printf("ERROR 2!\n");
 	if (check2 == 0)
 		printf("DONE READING 2!\n");
 
+	if((check1 = get_next_line(fd1, &line)) == 1)
+	{
+		printf("FD1: %i\n%s\n", fd1, line);
+	}
+	if (check1 == -1)
+		printf("ERROR 1!\n");
+	if (check1 == 0)
+		printf("DONE READING 1!\n");
+
+	if((check2 = get_next_line(fd2, &line)) == 1)
+	{
+		printf("FD2: %i\n%s\n", fd2, line);
+	}
+	if (check2 == -1)
+		printf("ERROR 2!\n");
+	if (check2 == 0)
+		printf("DONE READING 2!\n");
+
+	if((check1 = get_next_line(fd1, &line)) == 1)
+	{
+		printf("FD1: %i\n%s\n", fd1, line);
+	}
+	if (check1 == -1)
+		printf("ERROR 1!\n");
+	if (check1 == 0)
+		printf("DONE READING 1!\n");
 
 	close(fd1);
 	close(fd2);

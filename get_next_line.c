@@ -35,6 +35,11 @@ int		get_next_line(const int fd, char **line)
 			trim_buf(buf);
 			return (1);
 		}
+		else if (ret < BUFF_SIZE)
+		{
+			*line = get_line(temp);
+			return (1);
+		}
 	}
 	// NEED TO HANDLE WHEN NO NEW LINES IN FILE
 	return (ret);

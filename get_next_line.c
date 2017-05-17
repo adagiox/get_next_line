@@ -16,6 +16,7 @@ int		get_next_line(const int fd, char **line)
 {
 	static char	buf[BUFF_SIZE + 1];
 	char		*temp;
+	char		*ptr;
 	int			ret;
 
 	if (!line)
@@ -26,7 +27,8 @@ int		get_next_line(const int fd, char **line)
 		trim_buf(buf);
 		return (1);
 	}
-	temp = ft_strjoin(buf, ft_strnew(BUFF_SIZE));
+	ptr = ft_strnew(BUFF_SIZE);
+	temp = ft_strjoin(buf, ptr);
 	ft_strclr(buf);
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{

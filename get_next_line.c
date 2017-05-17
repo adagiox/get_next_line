@@ -18,6 +18,8 @@ int		get_next_line(const int fd, char **line)
 	char		*temp;
 	int			ret;
 
+	if (!line)
+		return (-1); 
 	if (contains_newline(buf) == 1)
 	{
 		*line = get_line(buf);

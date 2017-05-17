@@ -14,7 +14,7 @@
 
 int		get_next_line(const int fd, char **line)
 {
-	static char	buf[BUFF_SIZE];
+	static char	buf[BUFF_SIZE + 1];
 	char		*temp;
 	int			ret;
 
@@ -35,13 +35,13 @@ int		get_next_line(const int fd, char **line)
 			trim_buf(buf);
 			return (1);
 		}
-		else if (ret < BUFF_SIZE)
-		{
-			*line = get_line(temp);
-			return (1);
-		}
 	}
-	// NEED TO HANDLE WHEN NO NEW LINES IN FILE
+	if (ret == 0 && *temp)
+	{
+		*line = temp;
+		ft_strclr(buf);
+		return (1);
+	}
 	return (ret);
 }
 

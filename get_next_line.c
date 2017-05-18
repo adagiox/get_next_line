@@ -16,31 +16,36 @@ int		get_next_line(const int fd, char **line)
 {
 	static char	buf[BUFF_SIZE + 1];
 	char		*temp;
-	char		*ptr;
+	char		*holder;
 	int			ret;
 
 	if (!line)
 		return (-1); 
 	if (contains_newline(buf) == 1)
 	{
-		*line = get_line(buf);
+		*line = get_line(buf, 0);
 		trim_buf(buf);
 		return (1);
 	}
-	ptr = ft_strnew(BUFF_SIZE);
-	temp = ft_strjoin(buf, ptr);
+	temp = ft_strnew(BUFF_SIZE);
+	holder = ft_strjoin(buf, temp);
+	free(temp);
+	temp = holder;
 	ft_strclr(buf);
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		temp = ft_strjoin(temp, buf);
+		holder = ft_strjoin(temp, buf);
+		free(temp);
+		temp = holder;
 		if ((contains_newline(buf)) == 1)
 		{
-			*line = get_line(temp);
+			*line = get_line(temp, 1);
 			trim_buf(buf);
 			return (1);
 		}
+		ft_strclr(buf);
 	}
-	if (ret == 0 && *temp)
+	if (ret == 0 && *temp != 0 && *buf == 0)
 	{
 		*line = temp;
 		ft_strclr(buf);
@@ -54,20 +59,24 @@ void	trim_buf(char *buf)
 	int size;
 
 	size = 0;
-	while (buf[size] != '\n')
+	while (buf[size] != '\n' )
 		size++;
 	buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE);
 }
 
-char	*get_line(char *buf)
+char	*get_line(char *buf, int flag)
 {
 	int		size;
 	char	*line;
+	char	*holder;
 
 	size = 0;
 	while (buf[size] != '\n')
 		size++;
-	line = ft_strsub(buf, 0, size);
+	holder = ft_strsub(buf, 0, size);
+	if (flag == 1)
+		free(buf);
+	line = holder;
 	return (line);
 }
 

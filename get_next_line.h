@@ -19,11 +19,11 @@
 # include "libft/libft.h"
 
 
-# define BUFF_SIZE 1
+# define BUFF_SIZE 1000000
 
 int		get_next_line(const int fd, char **line);
 void	trim_buf(char *buf);
-char	*get_line(char *buf);
+char	*get_line(char *buf, int flag);
 int		contains_newline(char *buf);
 
 #endif

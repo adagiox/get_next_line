@@ -39,9 +39,9 @@ int	main(int argc, char **argv)
 		printf("DONE READING 2!\n");
 	
 	// READ FD1
-	while((check1 = get_next_line(fd1, &line)) == 1)
+	if((check1 = get_next_line(fd1, &line)) == 1)
 	{
-		printf("line: %s\n", line);
+		printf("FD1: %s\n", line);
 	}
 	if (check1 == -1)
 		printf("ERROR 1!\n");

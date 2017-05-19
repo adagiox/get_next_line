@@ -19,11 +19,19 @@
 # include "libft/libft.h"
 
 
-# define BUFF_SIZE 1000000
+# define BUFF_SIZE 10
+
+typedef struct	s_gnl 
+{
+	int				fd;
+	char		buf[BUFF_SIZE + 1];
+	struct s_gnl	*next;
+}						t_gnl;
 
 int		get_next_line(const int fd, char **line);
 void	trim_buf(char *buf);
 char	*get_line(char *buf, int flag);
 int		contains_newline(char *buf);
+t_gnl	*gnl_init(int fd, t_gnl *head);
 
 #endif

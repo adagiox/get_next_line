@@ -14,41 +14,45 @@
 
 int		get_next_line(const int fd, char **line)
 {
-	static char	buf[BUFF_SIZE + 1];
-	char		*temp;
-	char		*holder;
-	int			ret;
+	char			*temp;
+	char			*holder;
+	int				ret;
+	static t_gnl	*head;
+	t_gnl			*node;
 
 	if (!line)
-		return (-1); 
-	if (contains_newline(buf) == 1)
+		return (-1);
+	if (head == NULL)
+		head = gnl_init(fd, head);
+	node = gnl_init(fd, head);
+	if (contains_newline(node->buf) == 1)
 	{
-		*line = get_line(buf, 0);
-		trim_buf(buf);
+		*line = get_line(node->buf, 0);
+		trim_buf(node->buf);
 		return (1);
 	}
 	temp = ft_strnew(BUFF_SIZE);
-	holder = ft_strjoin(buf, temp);
+	holder = ft_strjoin(node->buf, temp);
 	free(temp);
 	temp = holder;
-	ft_strclr(buf);
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	ft_strclr(node->buf);
+	while ((ret = read(fd, node->buf, BUFF_SIZE)) > 0)
 	{
-		holder = ft_strjoin(temp, buf);
+		holder = ft_strjoin(temp, node->buf);
 		free(temp);
 		temp = holder;
-		if ((contains_newline(buf)) == 1)
+		if ((contains_newline(node->buf)) == 1)
 		{
 			*line = get_line(temp, 1);
-			trim_buf(buf);
+			trim_buf(node->buf);
 			return (1);
 		}
-		ft_strclr(buf);
+		ft_strclr(node->buf);
 	}
-	if (ret == 0 && *temp != 0 && *buf == 0)
+	if (ret == 0 && *temp != 0 && *(node->buf) == 0)
 	{
 		*line = temp;
-		ft_strclr(buf);
+		ft_strclr(node->buf);
 		return (1);
 	}
 	return (ret);
@@ -90,4 +94,34 @@ int		contains_newline(char *buf)
 	if (*nl == '\n')
 		return (1);
 	return (0);
+}
+
+t_gnl	*gnl_init(int fd, t_gnl *head)
+{
+	t_gnl *temp;
+
+	if (head == NULL)
+	{
+		temp = (t_gnl *)malloc(sizeof(t_gnl));
+		temp->fd = fd;
+		temp->next = NULL;
+		return (temp);
+	}
+	else
+	{
+		while (head->fd != fd && head->next != NULL)
+		{
+			head = head->next;
+		}
+	}
+	if (head->fd == fd)
+		return (head);
+	//printf("IN GNL_INIT\n");
+	temp = (t_gnl *)malloc(sizeof(t_gnl));
+	temp->fd = fd;
+	temp->next = NULL;
+	//printf("IN GNL_INIT\n");
+	head->next = temp;
+	//printf("IN GNL_INIT\n");
+	return (head);
 }

@@ -41,7 +41,7 @@ int	main(int argc, char **argv)
 	// READ FD1
 	if((check1 = get_next_line(fd1, &line)) == 1)
 	{
-		printf("FD1: %s\n", line);
+		printf("FD1:\t%s\n", line);
 	}
 	if (check1 == -1)
 		printf("ERROR 1!\n");
@@ -61,7 +61,7 @@ int	main(int argc, char **argv)
 	//READ FD1
 	if((check1 = get_next_line(fd1, &line)) == 1)
 	{
-		printf("FD1: %i\n%s\n", fd1, line);
+		printf("FD1:\t%s\n", line);
 	}
 	if (check1 == -1)
 		printf("ERROR 1!\n");
@@ -81,7 +81,7 @@ int	main(int argc, char **argv)
 	// // READ FD1
 	if((check1 = get_next_line(fd1, &line)) == 1)
 	{
-		printf("FD1: %i\n%s\n", fd1, line);
+		printf("FD1:\t%s\n", line);
 	}
 	if (check1 == -1)
 		printf("ERROR 1!\n");

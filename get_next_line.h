@@ -19,14 +19,14 @@
 # include "libft/libft.h"
 
 
-# define BUFF_SIZE 10
+# define BUFF_SIZE 5
 
 typedef struct	s_gnl 
 {
 	int				fd;
-	char		buf[BUFF_SIZE + 1];
+	char			buf[BUFF_SIZE + 1];
 	struct s_gnl	*next;
-}						t_gnl;
+}				t_gnl;
 
 int		get_next_line(const int fd, char **line);
 void	trim_buf(char *buf);

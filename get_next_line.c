@@ -35,7 +35,7 @@ int		get_next_line(const int fd, char **line)
 	holder = ft_strjoin(node->buf, temp);
 	free(temp);
 	temp = holder;
-	ft_strclr(node->buf);
+	ft_bzero(node->buf, BUFF_SIZE);
 	while ((ret = read(fd, node->buf, BUFF_SIZE)) > 0)
 	{
 		holder = ft_strjoin(temp, node->buf);
@@ -47,12 +47,13 @@ int		get_next_line(const int fd, char **line)
 			trim_buf(node->buf);
 			return (1);
 		}
-		ft_strclr(node->buf);
+		ft_bzero(node->buf, BUFF_SIZE);
 	}
 	if (ret == 0 && *temp != 0 && *(node->buf) == 0)
 	{
 		*line = temp;
-		ft_strclr(node->buf);
+		//printf("line: %s\n", temp);
+		ft_bzero(node->buf, BUFF_SIZE);
 		return (1);
 	}
 	return (ret);
@@ -104,24 +105,18 @@ t_gnl	*gnl_init(int fd, t_gnl *head)
 	{
 		temp = (t_gnl *)malloc(sizeof(t_gnl));
 		temp->fd = fd;
+		ft_bzero(temp->buf, BUFF_SIZE + 1);
 		temp->next = NULL;
 		return (temp);
 	}
-	else
-	{
-		while (head->fd != fd && head->next != NULL)
-		{
-			head = head->next;
-		}
-	}
+	while (head->fd != fd && head->next != NULL)
+		head = head->next;
 	if (head->fd == fd)
 		return (head);
-	//printf("IN GNL_INIT\n");
 	temp = (t_gnl *)malloc(sizeof(t_gnl));
 	temp->fd = fd;
+	ft_bzero(temp->buf, BUFF_SIZE + 1);
 	temp->next = NULL;
-	//printf("IN GNL_INIT\n");
 	head->next = temp;
-	//printf("IN GNL_INIT\n");
-	return (head);
+	return (temp);
 }

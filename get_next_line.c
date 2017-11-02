@@ -6,17 +6,14 @@
 /*   By: erintala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 13:39:59 by erintala          #+#    #+#             */
-/*   Updated: 2017/05/08 13:40:11 by erintala         ###   ########.fr       */
+/*   Updated: 2017/11/02 15:21:55 by erintala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "./includes/get_next_line.h"
 
 int		get_next_line(const int fd, char **line)
 {
-	char			*temp;
-	char			*holder;
-	int				ret;
 	static t_gnl	*head;
 	t_gnl			*node;
 
@@ -25,75 +22,80 @@ int		get_next_line(const int fd, char **line)
 	if (head == NULL)
 		head = gnl_init(fd, head);
 	node = gnl_init(fd, head);
-	if (contains_newline(node->buf) == 1)
-	{
-		*line = get_line(node->buf, 0);
-		trim_buf(node->buf);
+	if (contains_newline(node, NULL, line) == 1)
 		return (1);
-	}
+	return (read_line(node, line));
+}
+
+int		read_line(t_gnl *node, char **line)
+{
+	char			*temp;
+	char			*holder;
+	int				ret;
+
 	temp = ft_strnew(BUFF_SIZE);
 	holder = ft_strjoin(node->buf, temp);
 	free(temp);
 	temp = holder;
-	ft_bzero(node->buf, BUFF_SIZE);
-	while ((ret = read(fd, node->buf, BUFF_SIZE)) > 0)
+	while ((ret = read(node->fd, node->buf, BUFF_SIZE)) > 0)
 	{
 		holder = ft_strjoin(temp, node->buf);
 		free(temp);
 		temp = holder;
-		if ((contains_newline(node->buf)) == 1)
-		{
-			*line = get_line(temp, 1);
-			trim_buf(node->buf);
+		if ((contains_newline(node, temp, line)) == 1)
 			return (1);
-		}
 		ft_bzero(node->buf, BUFF_SIZE);
 	}
 	if (ret == 0 && *temp != 0 && *(node->buf) == 0)
 	{
 		*line = temp;
-		//printf("line: %s\n", temp);
-		ft_bzero(node->buf, BUFF_SIZE);
 		return (1);
 	}
+	if (ret == 0 && ft_strlen(temp) == 0)
+		free(temp);
 	return (ret);
 }
 
-void	trim_buf(char *buf)
-{
-	int size;
-
-	size = 0;
-	while (buf[size] != '\n' )
-		size++;
-	buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE);
-}
-
-char	*get_line(char *buf, int flag)
+char	*get_line(char *buf, char *temp)
 {
 	int		size;
 	char	*line;
 	char	*holder;
 
 	size = 0;
+	if (temp == NULL)
+	{
+		while (buf[size] != '\n')
+			size++;
+		holder = ft_strsub(buf, 0, size);
+		line = holder;
+		buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE);
+		return (line);
+	}
+	while (temp[size] != '\n')
+		size++;
+	holder = ft_strsub(temp, 0, size);
+	line = holder;
+	free(temp);
+	size = 0;
 	while (buf[size] != '\n')
 		size++;
-	holder = ft_strsub(buf, 0, size);
-	if (flag == 1)
-		free(buf);
-	line = holder;
+	buf = ft_strncpy(buf, &buf[size + 1], BUFF_SIZE);
 	return (line);
 }
 
-int		contains_newline(char *buf)
+int		contains_newline(t_gnl *node, char *temp, char **line)
 {
 	char *nl;
 
-	nl = ft_strchr(buf, '\n');
+	nl = ft_strchr(node->buf, '\n');
 	if (nl == NULL)
 		return (0);
 	if (*nl == '\n')
+	{
+		*line = get_line(node->buf, temp);
 		return (1);
+	}
 	return (0);
 }
 

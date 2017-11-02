@@ -6,7 +6,7 @@
 /*   By: erintala <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 13:39:59 by erintala          #+#    #+#             */
-/*   Updated: 2017/05/05 13:40:11 by erintala         ###   ########.fr       */
+/*   Updated: 2017/11/02 15:27:56 by erintala         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
-# include "libft/libft.h"
+# include "../libft/libft.h"
 
 
 # define BUFF_SIZE 5
@@ -28,10 +28,10 @@ typedef struct	s_gnl
 	struct s_gnl	*next;
 }				t_gnl;
 
-int		get_next_line(const int fd, char **line);
-void	trim_buf(char *buf);
-char	*get_line(char *buf, int flag);
-int		contains_newline(char *buf);
-t_gnl	*gnl_init(int fd, t_gnl *head);
+int get_next_line(const int fd, char **line);
+int read_line(t_gnl *node, char **line);
+char *get_line(char *buf, char *trmp);
+int contains_newline(t_gnl *node, char *temp, char **line);
+t_gnl *gnl_init(int fd, t_gnl *head);
 
 #endif
